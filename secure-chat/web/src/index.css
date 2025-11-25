@@ -1,0 +1,423 @@
+body {
+  margin: 0;
+  background: #000;
+  font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+  color: #fff;
+}
+
+.app-root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 12px 0;
+  background: #000;
+}
+
+.app-frame {
+  position: relative;
+  width: 420px;
+  height: 820px;
+  border-radius: 28px;
+  border: 1px solid #333;
+  background: #050506;
+  overflow: hidden;
+}
+
+/* チャット画面 */
+
+.chat-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 8px 10px;
+  gap: 8px;
+  border-bottom: 1px solid #111827;
+}
+
+.back-btn {
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 18px;
+}
+
+.chat-header-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-name {
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.chat-status {
+  font-size: 11px;
+  color: #10b981;
+}
+
+.share-id-label {
+  font-size: 10px;
+  color: #9ca3af;
+}
+
+.chat-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.share-id-btn {
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #111827;
+  color: #e5e7eb;
+  font-size: 10px;
+  padding: 4px 8px;
+}
+
+.icon-btn {
+  border: none;
+  background: transparent;
+  color: #e5e7eb;
+  font-size: 16px;
+}
+
+/* 共有ID入力ボックス */
+
+.pair-box {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 6px;
+}
+
+.pair-input {
+  flex: 0 0 70px;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+.pair-submit {
+  border-radius: 999px;
+  border: 1px solid #1e7ad8;
+  background: #1e7ad8;
+  color: #fff;
+  font-size: 11px;
+  padding: 3px 8px;
+}
+
+/* 自動削除バー */
+
+.retention-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  color: #9ca3af;
+  padding: 4px 10px;
+}
+
+.retention-bar select {
+  background: #111827;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  font-size: 11px;
+  padding: 2px 8px;
+}
+
+/* メッセージリスト */
+
+.message-list {
+  flex: 1;
+  padding: 8px 12px 60px;
+  overflow-y: auto;
+}
+
+.date-divider {
+  text-align: center;
+  font-size: 11px;
+  color: #6b7280;
+  margin: 8px 0 16px;
+}
+
+.message-row {
+  display: flex;
+  margin-bottom: 6px;
+}
+
+.message-row.own {
+  justify-content: flex-end;
+}
+
+.message-row.other {
+  justify-content: flex-start;
+}
+
+.bubble {
+  max-width: 70%;
+  padding: 6px 8px 4px;
+  position: relative;
+}
+
+.bubble-own {
+  background: #1e7ad8;
+  color: #fff;
+  border-radius: 18px 18px 4px 18px;
+}
+
+.bubble-other {
+  background: #1f2933;
+  color: #e5e7eb;
+  border-radius: 18px 18px 18px 4px;
+}
+
+.bubble-text {
+  font-size: 13px;
+}
+
+.bubble-time {
+  font-size: 10px;
+  opacity: 0.8;
+  text-align: right;
+  margin-top: 2px;
+}
+
+/* ファイル / 画像 */
+
+.file-box {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  padding: 6px;
+}
+
+.file-name {
+  font-size: 11px;
+  color: #d1d5db;
+  margin-bottom: 4px;
+}
+
+.photo-thumb {
+  display: block;
+  max-width: 180px;
+  border-radius: 10px;
+}
+
+.file-open-btn {
+  display: inline-block;
+  margin-top: 4px;
+  font-size: 11px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: #111827;
+  color: #e5e7eb;
+}
+
+/* 入力バー */
+
+.chat-input-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-top: 1px solid #111827;
+  background: #020617;
+}
+
+.round-btn {
+  width: 32px;
+  height: 32px;
+  border-radius: 999px;
+  border: none;
+  background: #111827;
+  color: #e5e7eb;
+}
+
+.attach-btn {
+  font-size: 20px;
+}
+
+.send-btn {
+  font-size: 16px;
+}
+
+.chat-input {
+  flex: 1;
+  background: #020617;
+  border-radius: 999px;
+  border: 1px solid #374151;
+  color: #e5e7eb;
+  font-size: 13px;
+  padding: 6px 10px;
+}
+
+/* 長押しメニュー（シンプル版） */
+
+.longpress-menu {
+  position: absolute;
+  left: 50%;
+  bottom: 70px;
+  transform: translateX(-50%);
+  background: #111827;
+  border-radius: 12px;
+  border: 1px solid #4b5563;
+  padding: 8px 10px;
+  display: flex;
+  gap: 8px;
+  z-index: 10;
+}
+
+.longpress-menu button {
+  border-radius: 999px;
+  border: 1px solid #374151;
+  background: #020617;
+  color: #e5e7eb;
+  font-size: 11px;
+  padding: 4px 8px;
+}
+
+/* 秘密保存インジケータ */
+
+.saved-indicator {
+  position: absolute;
+  right: 16px;
+  top: 52px;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  background: #111827;
+  border: 1px solid #1e7ad8;
+  color: #e5e7eb;
+}
+
+/* 下ナビ（端末の外） */
+
+.bottom-nav {
+  margin-top: 8px;
+  padding: 4px 8px;
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  background: #000;
+  border-top: 1px solid #222;
+  width: 100%;
+  max-width: 420px;
+}
+
+.nav-btn {
+  flex: 1;
+  max-width: 140px;
+  border-radius: 999px;
+  border: 1px solid #333;
+  background: #111;
+  color: #ddd;
+  font-size: 12px;
+  padding: 6px 0;
+}
+
+.nav-btn.active {
+  background: #1e7ad8;
+  border-color: #1e7ad8;
+  color: #fff;
+}
+
+/* Secret Box */
+
+.secret-box-page {
+  background: #050506;
+  height: 100%;
+  padding: 16px 12px;
+  color: #f5f5f5;
+}
+
+.sb-header {
+  margin-bottom: 12px;
+}
+
+.sb-title {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.sb-subtitle {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 2px;
+}
+
+.sb-tabs {
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 12px 0;
+}
+
+.sb-tabs button {
+  flex: 1;
+  background: #111;
+  border: 1px solid #333;
+  padding: 6px 0;
+  border-radius: 999px;
+  color: #ddd;
+  font-size: 13px;
+}
+
+.sb-tabs button.active {
+  background: #1e7ad8;
+  border-color: #1e7ad8;
+  color: #fff;
+}
+
+.sb-current-label {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-bottom: 6px;
+}
+
+.sb-content {
+  border-radius: 12px;
+  border: 1px solid #222;
+  background: #050608;
+  padding: 8px;
+  height: calc(100% - 120px);
+  overflow-y: auto;
+}
+
+.sb-empty {
+  font-size: 12px;
+  color: #9ca3af;
+  text-align: center;
+  padding: 24px 8px;
+}
+
+.sb-item {
+  background: #111217;
+  border-radius: 10px;
+  border: 1px solid #262626;
+  padding: 8px 10px;
+  margin-bottom: 8px;
+}
+
+.sb-item-main {
+  font-size: 13px;
+  margin-bottom: 4px;
+  word-break: break-all;
+}
+
+.sb-item-meta {
+  font-size: 10px;
+  color: #6b7280;
+}
+

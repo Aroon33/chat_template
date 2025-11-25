@@ -1,0 +1,43 @@
+.secret-box-page {
+  background: #050506;
+  height: 100%;
+  padding: 12px;
+  color: #f5f5f5;
+}
+
+.sb-header {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.sb-tabs {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 16px;
+}
+
+.sb-tabs button {
+  background: #1a1a1a;
+  border: 1px solid #333;
+  padding: 6px 14px;
+  border-radius: 999px;
+  color: #ddd;
+  font-size: 14px;
+}
+
+.sb-tabs button.active {
+  background: #1e7ad8;
+  border-color: #1e7ad8;
+  color: white;
+}
+
+.sb-content .sb-item {
+  background: #111;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  border: 1px solid #222;
+}
+
