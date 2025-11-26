@@ -1,109 +1,73 @@
-import { useState } from "react";
-import type { ChangeEvent } from "react";
-
+// src/components/Chat/ChatHeader.tsx
 type ChatHeaderProps = {
   name: string;
   status?: string;
+
+  // 既存の props（App/ChatScreen 側を壊さないためにそのまま受け取る）
   shareId?: string | null;
   shareExpiresAt?: string | null;
   onGenerateShareId?: () => void;
   onPairByCode?: (code: string) => void;
+
+  inCall: boolean;
+  onToggleCall: () => void;
+
+  onOpenSettings: () => void;
+
+  // 将来「ユーザー一覧に戻る」用に使うかもしれない
+  onBack?: () => void;
 };
 
-function ChatHeader({
+export default function ChatHeader({
   name,
-  status,
-  shareId,
-  shareExpiresAt,
-  onGenerateShareId,
-  onPairByCode,
+  status = "オンライン",
+  inCall,
+  onToggleCall,
+  onOpenSettings,
+  onBack,
 }: ChatHeaderProps) {
-  const [showPairInput, setShowPairInput] = useState(false);
-  const [pairCode, setPairCode] = useState("");
-
-  const now = new Date();
-  const expires =
-    shareId && shareExpiresAt ? new Date(shareExpiresAt) : null;
-  const isActive = expires ? expires.getTime() > now.getTime() : false;
-
-  let shareLabel = "";
-  if (shareId && expires) {
-    const hh = expires.getHours().toString().padStart(2, "0");
-    const mm = expires.getMinutes().toString().padStart(2, "0");
-    shareLabel = isActive
-      ? `共有ID: ${shareId}（〜${hh}:${mm}）`
-      : "共有ID: 期限切れ";
-  }
-
-  const handlePairSubmit = () => {
-    if (onPairByCode) {
-      onPairByCode(pairCode);
-    }
-  };
-
-  const handlePairInputChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // 数字のみ・5桁まで
-    const v = e.target.value.replace(/[^0-9]/g, "").slice(0, 5);
-    setPairCode(v);
-  };
+  const initial = name.charAt(0).toUpperCase();
 
   return (
     <header className="chat-header">
-      <button className="back-btn">←</button>
+      {/* 左側：戻る＋アイコン＋名前 */}
+      <div className="chat-header-left">
+        <button
+          className="icon-btn back-btn"
+          onClick={onBack}
+          disabled={!onBack}
+        >
+          ←
+        </button>
 
-      <div className="chat-header-info">
-        <div className="chat-name">{name}</div>
-        {status && <div className="chat-status">{status}</div>}
-        {shareLabel && (
-          <div className="share-id-label">{shareLabel}</div>
-        )}
+        <div className="avatar-circle">{initial}</div>
+
+        <div className="chat-header-text">
+          <div className="chat-header-name">{name}</div>
+          <div className="chat-header-status">{status}</div>
+        </div>
       </div>
 
+      {/* 右側：通話＋設定 */}
       <div className="chat-header-actions">
-        {onGenerateShareId && (
-          <button
-            className="share-id-btn"
-            onClick={onGenerateShareId}
-            disabled={!!shareId && isActive}
-          >
-            {isActive ? "共有ID発行中" : "共有ID発行"}
-          </button>
-        )}
-
-        {onPairByCode && (
-          <button
-            className="share-id-btn"
-            onClick={() => setShowPairInput((v) => !v)}
-          >
-            ID入力
-          </button>
-        )}
-
-        <button className="icon-btn" aria-label="Call">
+        <button
+          className={`icon-btn call-btn ${inCall ? "active" : ""}`}
+          onClick={onToggleCall}
+        >
           📞
         </button>
-        <button className="icon-btn" aria-label="Menu">
-          ⋮
+        <button className="icon-btn settings-btn" onClick={onOpenSettings}>
+          ⚙️
         </button>
       </div>
-
-      {showPairInput && (
-        <div className="pair-box">
-          <input
-            type="text"
-            className="pair-input"
-            placeholder="5桁のID"
-            value={pairCode}
-            onChange={handlePairInputChange}
-          />
-          <button className="pair-submit" onClick={handlePairSubmit}>
-            接続
-          </button>
-        </div>
-      )}
     </header>
   );
 }
 
-export default ChatHeader;
+
+
+
+
+
+
 

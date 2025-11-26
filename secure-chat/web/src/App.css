@@ -40,3 +40,22 @@
 .read-the-docs {
   color: #888;
 }
+
+/* ====== グローバルテーマ設定 ====== */
+:root {
+  --bg-color: #ffffff;
+  --text-color: #222222;
+  --app-font-size: 16px;
+}
+
+[data-theme="dark"] {
+  --bg-color: #1a1a1a;
+  --text-color: #f0f0f0;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  font-size: var(--app-font-size);
+}
+

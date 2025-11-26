@@ -1,7 +1,6 @@
 import { useState } from "react";
 import type { FormEvent, ChangeEvent } from "react";
 
-
 import ChatHeader from "./ChatHeader";
 import ChatMessage from "./ChatMessage";
 
@@ -16,20 +15,31 @@ type Message = {
 };
 
 type ChatScreenProps = {
+  userName: string; // ヘッダーに表示する相手名 or 自分名
+
   messages: Message[];
   onSend: (text: string) => void;
   onSendFile: (fileName: string, fileUrl: string) => void;
   onSaveToSecretBox: (content: string) => void;
+
   retentionMinutes: number;
   onChangeRetentionMinutes: (m: number) => void;
   secretCount: number;
+
   shareId: string | null;
   shareExpiresAt: string | null;
   onGenerateShareId: () => void;
   onPairByCode: (code: string) => void;
+
+  inCall: boolean;
+  onToggleCall: () => void;
+
+  onOpenSettings: () => void;
+  onBack: () => void;
 };
 
 function ChatScreen({
+  userName,
   messages,
   onSend,
   onSendFile,
@@ -41,6 +51,10 @@ function ChatScreen({
   shareExpiresAt,
   onGenerateShareId,
   onPairByCode,
+  inCall,
+  onToggleCall,
+  onOpenSettings,
+  onBack,
 }: ChatScreenProps) {
   const [input, setInput] = useState("");
   const [longPressTarget, setLongPressTarget] =
@@ -52,7 +66,16 @@ function ChatScreen({
     setInput("");
   };
 
-  const handleSaveToSecretBoxClick = () => {
+  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const url = URL.createObjectURL(file);
+    onSendFile(file.name, url);
+    e.target.value = "";
+  };
+
+  const handleSaveClick = () => {
     if (!longPressTarget) return;
     const content =
       longPressTarget.text || longPressTarget.fileName || "";
@@ -61,27 +84,23 @@ function ChatScreen({
     setLongPressTarget(null);
   };
 
-  // ＋ボタンからファイル選択 → 親(App)へ通知
-  const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
-    onSendFile(file.name, url);
-    e.target.value = "";
-  };
-
   return (
     <section className="chat-screen">
+      {/* ヘッダー */}
       <ChatHeader
-        name="BlueFox"
+        name={userName}
         status="オンライン"
         shareId={shareId}
         shareExpiresAt={shareExpiresAt}
         onGenerateShareId={onGenerateShareId}
         onPairByCode={onPairByCode}
+        inCall={inCall}
+        onToggleCall={onToggleCall}
+        onOpenSettings={onOpenSettings}
+        onBack={onBack}
       />
 
-      {/* 自動削除設定バー */}
+      {/* 自動削除バー */}
       <div className="retention-bar">
         <span>自動削除:</span>
         <select
@@ -97,12 +116,12 @@ function ChatScreen({
         </select>
       </div>
 
+      {/* 秘密保存インジケーター */}
       {secretCount > 0 && (
-        <div className="saved-indicator">
-          秘密保存: {secretCount} 件
-        </div>
+        <div className="saved-indicator">秘密保存: {secretCount} 件</div>
       )}
 
+      {/* メッセージ一覧 */}
       <div className="message-list">
         <div className="date-divider">今日</div>
 
@@ -120,13 +139,12 @@ function ChatScreen({
         ))}
       </div>
 
+      {/* フッター：＋／入力／カメラ／送信 */}
       <footer className="chat-input-bar">
-        {/* 添付ボタン ＋ 隠し input */}
+        {/* 画像追加ボタン */}
         <button
           className="round-btn attach-btn"
-          onClick={() =>
-            document.getElementById("file-input")?.click()
-          }
+          onClick={() => document.getElementById("file-input")?.click()}
         >
           ＋
         </button>
@@ -138,9 +156,10 @@ function ChatScreen({
           onChange={handleFileSelect}
         />
 
+        {/* 入力フォーム＋カメラ＋送信 */}
         <form
           onSubmit={handleSubmit}
-          style={{ display: "flex", flex: 1, gap: 6 }}
+          className="chat-input-form"
         >
           <input
             className="chat-input"
@@ -149,20 +168,26 @@ function ChatScreen({
             value={input}
             onChange={(e) => setInput(e.target.value)}
           />
+
+          <button
+            type="button"
+            className="round-btn camera-btn"
+            onClick={() => console.log("カメラ起動（あとで実装）")}
+          >
+            📷
+          </button>
+
           <button className="round-btn send-btn" type="submit">
             ↑
           </button>
         </form>
       </footer>
 
+      {/* 長押しメニュー */}
       {longPressTarget && (
         <div className="longpress-menu">
-          <button onClick={handleSaveToSecretBoxClick}>
-            秘密保存ボックスに保存
-          </button>
-          <button onClick={() => setLongPressTarget(null)}>
-            キャンセル
-          </button>
+          <button onClick={handleSaveClick}>秘密保存ボックスに保存</button>
+          <button onClick={() => setLongPressTarget(null)}>キャンセル</button>
         </div>
       )}
     </section>
@@ -170,4 +195,9 @@ function ChatScreen({
 }
 
 export default ChatScreen;
+
+
+
+
+
 

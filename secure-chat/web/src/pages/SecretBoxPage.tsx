@@ -11,9 +11,10 @@ type SecretItem = {
 
 type SecretBoxPageProps = {
   items: SecretItem[];
+  onBack: () => void; // ← 必須
 };
 
-function SecretBoxPage({ items }: SecretBoxPageProps) {
+function SecretBoxPage({ items, onBack }: SecretBoxPageProps) {   // ← 修正ポイント
   const [tab, setTab] = useState<Tab>("messages");
 
   const messages = items.filter((i) => i.type === "message");
@@ -32,6 +33,12 @@ function SecretBoxPage({ items }: SecretBoxPageProps) {
   return (
     <div className="secret-box-page">
       <header className="sb-header">
+
+        {/* ← 戻るボタンを追加（重要） */}
+        <button className="sb-back-btn" onClick={onBack}>
+          ← 戻る
+        </button>
+
         <div className="sb-title">秘密保存ボックス</div>
         <div className="sb-subtitle">端末には残さない一時保存エリア</div>
       </header>
@@ -80,4 +87,3 @@ function SecretBoxPage({ items }: SecretBoxPageProps) {
 }
 
 export default SecretBoxPage;
-

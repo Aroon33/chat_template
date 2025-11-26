@@ -4,7 +4,6 @@ import { WebSocketServer, WebSocket } from "ws";
 import http from "http";
 
 const app = express();
-
 app.use(cors());
 app.use(express.json());
 
@@ -22,20 +21,18 @@ app.post("/api/share/create", (req, res) => {
   const expiresAt = Date.now() + 5 * 60 * 1000; // 5分後
 
   rooms.set(id, { id, expiresAt });
-
   console.log("create shareId", id);
+
   res.json({ id, expiresAt });
 });
 
 // 共有IDチェック: POST /api/share/verify
 app.post("/api/share/verify", (req, res) => {
   const { id } = req.body as { id?: string };
-
   if (!id) return res.status(400).json({ ok: false, reason: "id required" });
 
   const room = rooms.get(id);
   if (!room) return res.json({ ok: false, reason: "not_found" });
-
   if (room.expiresAt <= Date.now())
     return res.json({ ok: false, reason: "expired" });
 
@@ -64,23 +61,14 @@ wss.on("connection", (ws: ExtWebSocket, req) => {
 
   ws.roomId = roomId;
 
-  // ルームにクライアント追加
   let set = roomClients.get(roomId);
   if (!set) {
     set = new Set();
     roomClients.set(roomId, set);
   }
-
   set.add(ws);
+  console.log("WS client connected to room", roomId, "size", set.size);
 
-  console.log(
-    "WS client connected to room",
-    roomId,
-    "size",
-    set.size
-  );
-
-  // メッセージ転送（同じroom内のみ）
   ws.on("message", (data) => {
     const msg = data.toString();
     const clients = roomClients.get(roomId);
@@ -88,7 +76,7 @@ wss.on("connection", (ws: ExtWebSocket, req) => {
 
     for (const client of clients) {
       if (client !== ws && client.readyState === WebSocket.OPEN) {
-        client.send(msg);
+        client.send(msg); // 受け取ったシグナリングを同じroomの他クライアントへ転送
       }
     }
   });
@@ -96,16 +84,8 @@ wss.on("connection", (ws: ExtWebSocket, req) => {
   ws.on("close", () => {
     const clients = roomClients.get(roomId);
     if (!clients) return;
-
     clients.delete(ws);
-
-    console.log(
-      "WS client disconnected from room",
-      roomId,
-      "size",
-      clients.size
-    );
-
+    console.log("WS client disconnected from room", roomId, "size", clients.size);
     if (clients.size === 0) {
       roomClients.delete(roomId);
     }
@@ -113,8 +93,6 @@ wss.on("connection", (ws: ExtWebSocket, req) => {
 });
 
 const PORT = process.env.PORT || 4000;
-
 server.listen(PORT, () => {
   console.log("Signaling server listening on port", PORT);
 });
-	
